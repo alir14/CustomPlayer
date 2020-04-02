@@ -1,0 +1,72 @@
+#btnStop{
+    width: 100%;
+}
+
+#btnStart{
+    width: 100%;
+}
+
+#videoControls{
+    height: 40px;
+    width: 67%;
+    padding: 10px;
+    position: absolute;
+    /* background-color: coral; */
+    /* top: 107%; */
+    /* left: 50%; */
+    /* transform: translate(-50%,-50%); */
+    transition:  all .5s;
+}
+/* #main:hover #videoControls{
+    top: 92%;
+} */
+
+#seek-bar{
+    width: 100%;
+    height: 10px;
+    background-color: gray;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#fill{
+    height: 10px;
+    background-color:#877D7D;
+}
+
+#playbtn{
+    width: 18px;
+    height: 18px;
+}
+
+#currentTime{
+    font-size: 14px;
+}
+
+#playbtn{
+    cursor: pointer;
+}
+
+input[type=range]{
+    background-color: #333333;
+    height: 4px;
+    border-radius: 4px;
+    outline: none;
+}
+
+#myVideo{
+    width: 90%;
+}
+
+.questionContainer-hide{
+    display: none;
+}
+
+.questionContainer-show{
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    background: rgba(36, 91, 150, 0.1);
+}
