@@ -54,9 +54,92 @@ function saveandcontinueVideo(type, answer){
 
     _questionContainer.attr('class', 'questionContainer-hide');
 
-    if(!_video.ended)
-        _video.play();
+    // if(!_video.ended)
+    //     _video.play();
 
+    validateAnswerAndGotoNextVideo(_currentQuestion);
+}
+
+function validateAnswerAndGotoNextVideo(question){
+    var answer = _currentQuestion.answer.toLowerCase();
+    var conditions = _currentQuestion.conditions;
+    
+    if(conditions){
+        conditions.forEach(element => {
+            switch(question.type){
+                case 0:{
+                    var result = validateCondition(element, answer);
+                    if(result == true)
+                        return;
+                    break;
+                }
+                case 1: {
+                    var result = validateCondition(element, answer);
+                    if(result == true)
+                        return;
+                    break;
+                }
+                default: break;
+            }
+        });
+    }
+}
+
+function validateCondition(item, answer){
+    var result = false;
+    var Id = -1;
+    switch(item.ifanswer){
+        case 'eq':
+            {
+                if(item.value == answer)
+                {
+                    Id = item.gotoId;
+                    result = true;
+                }
+                break;
+            }
+        case 'lt':
+            {
+                if(item.value < answer)
+                {
+                    Id = item.gotoId;
+                    result = true;
+                }
+                break;
+            }
+        case 'gt':
+            {
+                if(item.value > answer)
+                {
+                    Id = item.gotoId;
+                    result = true;
+                }
+                break;
+            }
+        case 'lte':
+            {
+                if(item.value <= answer)
+                {
+                    Id = item.gotoId;
+                    result = true;
+                }
+                break;
+            }
+        case 'gte':
+            {
+                if(item.value >= answer)
+                {
+                    Id = item.gotoId;
+                    result = true;
+                }
+                break;
+            }
+    }
+
+    if(Id > -1)
+        loadStepbyId(Id);
+    
+    return result;
 }
 
 function ReplayVideo(){

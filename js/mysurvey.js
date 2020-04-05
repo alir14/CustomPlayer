@@ -1,61 +1,91 @@
 var contentData =[];
+var _currentId;
 var _currentIndex;
 $(document).ready(function(){
     contentData = getContentData();
     populateSteps();
-    loadStep(0);
+    loadStepbyIndex(0);
 });
 
 function populateSteps(){
     var stepsContainer = $('#stepsContainer');
 
     contentData.forEach((element, index) => {
-        stepsContainer.append('<li role="tab" class="first current" ><a id="section0" href="#" onclick="loadStep(' + index + ')" >'+ element.stepName +' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>');
+        stepsContainer.append('<li id=\'step' + index + '\' class="current" role="tab" ><a class="stepbutton" id=\'btnsection' + index + '\' " href="#" onclick="loadStepbyIndex(' + index + ')" >'+ element.stepName +' <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>');
     });
 }
 
-function loadStep(index){
-    console.log(index);
+function loadStepbyIndex(index){
     _currentIndex = index;
     toggleButtons();
-    var data = contentData[index];
-    loadData(data);
+    if(_currentIndex > -1)
+        loadData(contentData[_currentIndex]);
+}
+
+function loadStepbyId(Id){
+    _currentIndex = contentData.findIndex(x=> x.Id == Id) ;
+    toggleButtons();
+    if(_currentIndex > -1)
+        loadData(contentData[_currentIndex]);
 }
 
 function getContentData(){
     return [
             {
+                'Id': 0,
                 'stepName': 'Question 1', 
-                'videoUrl': 'media/SampleVideos.mp4', 
+                'videoUrl': 'media/Q1.mp4', 
                 'questions':[
-                    {'time': 2, 'question': 'Question 1?', 'answer':'', 'type':0, 'isviewed': false }
+                    {'time': 10, 'question': 'Do you have fever?', 'answer':'', 'type':0, 'isviewed': false , 'conditions':[{'ifanswer':'eq', 'value': 'yes','gotoId': 3}, {'ifanswer':'eq', 'value': 'no', 'goto': 1}]}
                 ]
             },
             {
+                'Id': 1,
                 'stepName': 'Question 2', 
-                'videoUrl': 'media/suit.mp4', 
+                'videoUrl': 'media/Q2.mp4', 
                 'questions':[
-                    {'time': 3, 'question': 'Question 2?', 'answer':'', 'type':0, 'isviewed': false }
+                    {'time': 10, 'question': 'Do you have dry cough?', 'answer':'', 'type':0, 'isviewed': false , 'conditions':[{'ifanswer':'eq', 'value': 'yes','gotoId': 2}, {'ifanswer':'eq', 'value': 'no', 'gotoId': 3}]}
                 ]
             },
             {
+                'Id': 2,
                 'stepName': 'Question 3', 
-                'videoUrl': 'media/nature.mp4', 
+                'videoUrl': 'media/Q2b.mp4', 
                 'questions':[
-                    {'time': 4, 'question': 'question 3?', 'answer':'', 'type':1, 'isviewed': false }
+                    {'time': 10, 'question': 'How old are you?', 'answer':'', 'type':1, 'isviewed': false , 'conditions':[{'ifanswer':'lte', 'value': '30','gotoId': 3}, {'ifanswer':'gt', 'value': '30', 'gotoId': 4}]}
                 ]
             },
             {
+                'Id': 3,
                 'stepName': 'Question 4', 
                 'videoUrl': 'media/earth.mp4', 
                 'questions':[
-                    {'time': 5, 'question': 'question 4?', 'answer':'', 'type':1, 'isviewed': false }
+                    {'time': 10, 'question': 'How many degre is your fever?', 'answer':'', 'type':1, 'isviewed': false , 'conditions':[{'ifanswer':'lte', 'value': '30','gotoId': 4}, {'ifanswer':'gt', 'value': '30', 'gotoId': 5}]}
                 ]
+            },
+            {
+                'Id': 4,
+                'stepName': 'Question 5', 
+                'videoUrl': 'media/nature.mp4', 
+                'questions':[
+                    {'time': 10, 'question': 'Question 5?', 'answer':'', 'type':1, 'isviewed': false , 'conditions':[{'ifanswer':'lte', 'value': '30','gotoId': 4}, {'ifanswer':'gt', 'value': '30', 'gotoId': 5}]}
+                ],
+                
+            },
+            {
+                'Id': 5,
+                'stepName': 'Question 6', 
+                'videoUrl': 'media/suit.mp4', 
+                'questions':[
+                    {'time': 10, 'question': 'Question 5?', 'answer':'', 'type':0, 'isviewed': false , 'conditions':[{'ifanswer':'eq', 'value': 'yes','gotoId': 4}, {'ifanswer':'no', 'value': '30', 'gotoId': 5}]}
+                ],
             }
+
         ];
 }
 
 function loadData(data){
+    setMenuItemActive();
     console.log(data);
 
     setVideoSource(data);
@@ -65,7 +95,7 @@ function NextStep(){
     if(_currentIndex < (contentData.length -1)) {
         _currentIndex ++;
         toggleButtons();
-        loadStep(_currentIndex);
+        loadStepbyIndex(_currentIndex);
     }
 }
 
@@ -73,7 +103,7 @@ function PreviousStep(){
     if(_currentIndex > 0) {
         _currentIndex --;
         toggleButtons();
-        loadStep(_currentIndex);
+        loadStepbyIndex(_currentIndex);
     }
 }
 
@@ -99,4 +129,9 @@ function CompleteAndSave(){
     //save data()
     localStorage.summaryData = JSON.stringify(contentData);
     window.location.replace("summary.html");
+}
+
+function setMenuItemActive(){
+    $( ".stepbutton" ).css( "background-color", "" );
+    $('#btnsection'+_currentIndex).css('background-color','#808080');
 }
