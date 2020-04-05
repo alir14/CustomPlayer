@@ -109,3 +109,7 @@ function continueVideo(){
     _questionContainer.attr('class', 'questionContainer-hide');
 
 }
+
+function replayVideo(){
+    
+}
