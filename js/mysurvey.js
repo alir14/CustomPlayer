@@ -36,7 +36,7 @@ function getContentData(){
                 'stepName': 'Question 1', 
                 'videoUrl': 'media/Q1.mp4', 
                 'questions':[
-                    {'time': 10, 'question': 'Do you have fever?', 'answer':'', 'type':0, 'isviewed': false , 'conditions':[{'ifanswer':'eq', 'value': 'yes','gotoId': 3}, {'ifanswer':'eq', 'value': 'no', 'goto': 1}]}
+                    {'time': 10, 'question': 'Do you have fever?', 'answer':'', 'type':0, 'isviewed': false , 'conditions':[{'ifanswer':'eq', 'value': 'yes','gotoId': 3}, {'ifanswer':'eq', 'value': 'no', 'gotoId': 1}]}
                 ]
             },
             {
